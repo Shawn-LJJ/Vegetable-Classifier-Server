@@ -1,0 +1,20 @@
+stages:
+  - test-model
+  - deploy
+
+pytest-model:
+  stage: test-model
+  image: python:3.8
+  script:
+    - pip install -r requirements.txt
+    - python -m pytest tests/test_model.py --junitxml=report.xml
+  artifacts:
+    reports:
+      junit: report.xml
+    name: 'models-results-artifact'
+    when: always
+
+deployment:
+  stage: deploy
+  script:
+    - curl https://api.render.com/deploy/srv-cmnsmuda73kc73b1pugg?key=lGRjfjFhlg4
